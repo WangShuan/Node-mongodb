@@ -21,13 +21,7 @@
       </div>
       <div class="form-group">
         <label for="">密碼</label>
-        <a class="pull-right" href="">忘記密碼？</a>
         <input type="password" class="form-control" id="" name="password" placeholder="Password">
-      </div>
-      <div class="checkbox">
-        <label>
-          <input type="checkbox">記住我
-        </label>
       </div>
       <button type="submit" class="btn btn-success btn-block">登入</button>
     </form>
@@ -49,8 +43,6 @@
         success: function (data) {
           var err_code = data.err_code
           if (err_code === 0) {
-            // window.alert('注册成功！')
-            // 服务端重定向针对异步请求无效
             window.location.href = '/'
           } else if (err_code === 1) {
             window.alert('信箱或密碼錯誤')

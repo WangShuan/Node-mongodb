@@ -536,7 +536,7 @@ p1
     - 因為模塊路徑是跟隨當前文件的目錄尋找的，而不是像文件操作一樣是跟隨執行命令所處目錄尋找
 
 
-## 9. 用所學做一個部落格網站
+## 9. 用所學做一個可註冊登入登出的部落格網站
 
 新增一個 `blog` 目錄 開啟終端機 創建 `package.json` 文件
 
@@ -554,6 +554,10 @@ p1
   app.use('/node_modules/', express.static(path.join(__dirname, './node_modules/')))
 
   ```
+
+現在到 `blog` 目錄中新增一個 `views` 目錄存放所有要被渲染的 `html` 頁面檔案
+
+### 9-1. `art-template` 提供的處理重複代碼方式
 
 設置頁面 使用 `art-template` 模板引擎提供的編碼 把重複代碼做成 `layouts.html` 頁面
 
@@ -595,3 +599,205 @@ p1
 
 ```
 
+### 9-2. 在路由中使用數據庫集合的方式
+
+在 `blog` 目錄中增加 `models` 目錄存放數據集合
+
+這裏把數據歸類為用戶相關的 取名叫 `user.js`
+
+回到 `app.js` 文件中 創建變量 `User = require('/models/user.js')`
+
+在數據集合文件中則 加載引入 `mongoose` 連結到 `mongodb://localhost/blog` 數據庫
+
+設置好集合結構 並使用 `moduls.exports = mongoose.model()` 導出集合模型對象
+
+### 9-3. 處理註冊請求
+
+先創建一個變量 `loginUser` 為空(裡面用來存放當前登入對象)
+
+在註冊時 我們要判斷郵箱或暱稱是否已存在 如果存在則不能註冊
+
+當使用 `findOne()` 方法傳入多個條件({條件1,條件2}) 其實是查找符合條件1且也符合條件2的結果
+
+這裏我們要查找的方式是郵箱「或」暱稱是否符合 所以要使用 `$or` 操作符
+
+* 這是 `mongoDB` 提供的「文檔操作符」 諸如此類的還有 `$nor` `$not` `$and` 等
+
+* `$or:[{},{}]` 用來判斷符合條件1或條件2的文檔對象
+
+* `$nor:[{},{}]` 用來判斷不符合條件的所有文檔對象
+
+* `$not:[{}]` 用來判斷不符合該條件的文檔對象
+
+* `$and:[{},{}]` 用來判斷符合條件1並符合條件2的文檔對象
+
+* 用法為 `find( { 操作符 : [ {條件1} , {條件2} ] } , fn(){...})`
+
+判斷郵箱或暱稱都不存在後即可使用 `new User()` 創建新用戶對象
+
+這裏我們安裝加載第三方包 `blueipm-md5` 將該變量名設為 `md5` 它是一個密碼加密的工具
+
+為了防止密碼被暴力破解我們使用 `md5(md5(password))` (把密碼加密兩次) 再傳入數據庫中
+
+因為註冊可能出現信箱或密碼已被使用 要重新註冊的問題 這裏如果使用服務器去執行的話代碼會很繁雜
+
+所以這裡我們處理成不使用表單的默認提交(即在頁面的表單中添加 `method` 和 `action`屬性)
+
+改成使用異步表單提交(即`ajax`) 
+
+***注意當使用異步提交就無法在服務端使用重定向***
+
+* 因為服務端的重定向只針對同步請求才有效 所以這裏如果使用服務端重定向會無效化
+
+而使用 `$ajax()` 須得到返回值為 `json` 數據
+
+這裏如果使用 `res.send()` 方法要把字符串先轉 `json` 數據格式再傳送 這樣太麻煩了
+
+`express` 為了處理這個情況 增加了一個 `res.json()` 方法
+
+* 該方法會直接幫你把對象轉成 `json` 數據格式 這裏我們讓 `res.json()` 傳送 `err_code`
+
+    - 當錯誤碼為`500`表示服務端有錯 當錯誤碼為`0`表示沒有重複直接完成註冊 當錯誤碼為`1`表示信箱或暱稱已存在
+
+    - 再到 `register.html` 中的 `$ajax()` 判斷錯誤碼為多少 
+    
+    - 若為`0`則通過 `window.location.href = '/'` 跳轉至首頁
+
+在註冊成功發送響應前 把 `user` 設為 `loginUser` 的值 這樣跳轉回首頁的同時就能默認登入狀態了
+
+路由文件中的代碼如下：
+
+```js
+
+router.post('/register', function (req, res) {
+    User.findOne({ $or: [{ email: req.body.email }, { nickname: req.body.nickname }] }, function (err, ret) {
+        if (err) {
+            return res.status(500).json({
+                err_code: 500
+            })
+        }
+        if (ret) {
+            return res.status(200).json({
+                err_code: 1
+            })
+        }
+
+        req.body.password = md5(md5(req.body.password))
+
+        new User(req.body).save(function (err,user) {
+            if (err) {
+                return res.status(500).json({
+                    err_code: 500
+                })
+            }
+            loginUser = user
+            res.status(200).json({
+                err_code: 0
+            })
+        })
+    })
+})
+
+```
+
+`html` 頁面中的 `ajax` 代碼如下：
+
+```js
+
+$('#register_form').on('submit', function (e) {
+      e.preventDefault() // 阻止表單默認提交行為
+      var formData = $(this).serialize()
+      $.ajax({
+        url: '/register',
+        type: 'post',
+        data: formData,
+        dataType: 'json',
+        success: function (data) {
+          var err_code = data.err_code
+          if (err_code === 0) {
+            window.alert('註冊成功！')
+            window.location.href = '/'
+          } else if (err_code === 1) {
+            window.alert('郵箱或暱稱已存在')
+          } else if (err_code === 500) {
+            window.alert('系統繁忙，請稍候重試。')
+          }
+        }
+      })
+    })
+
+```
+
+### 9-4. 處理登入請求
+
+基本上都和註冊差不多 只是判斷條件變成符合信箱又符合密碼的才成功
+
+這裡就直接使用 `User.findOne({條件1,條件2},fn(err,user){...})`
+
+判斷 當 `user` 存在即跳轉頁面登入 當 `user==='null'` 表示條件不符返回信箱或密碼錯誤
+
+然後把 `findOne()` 得到的 `user` 設為 `loginUser` 的值 這樣跳轉回首頁就能傳入用戶對象了
+
+路由文件中的代碼如下：
+
+```js
+
+router.post('/login', function (req, res) {
+    User.findOne({ email: req.body.email , password: md5(md5(req.body.password)) }, function (err, user) {
+        if (err) {
+            return res.status(500).json({
+                err_code: 500
+            })
+        }
+        if (ret === 'null') {
+            return res.status(200).json({
+                err_code: 1
+            })
+        }
+
+        loginUser = user
+        res.status(200).json({
+            err_code: 0
+        })
+    })
+})
+
+```
+
+`html` 頁面中的 `ajax` 代碼如下：
+
+```js
+
+$('#login_form').on('submit', function (e) {
+      e.preventDefault()
+      var formData = $(this).serialize()
+      console.log(formData)
+      $.ajax({
+        url: '/login',
+        type: 'post',
+        data: formData,
+        dataType: 'json',
+        success: function (data) {
+          var err_code = data.err_code
+          if (err_code === 0) {
+            window.location.href = '/'
+          } else if (err_code === 1) {
+            window.alert('信箱或密碼錯誤')
+          } else if (err_code === 500) {
+            window.alert('系統繁忙，請稍候重試。')
+          }
+        }
+      })
+    })
+
+```
+
+### 9-5. 處理登出請求
+
+登入時頁面右上角會出現一個小頭像跟箭頭 點擊後可以看到有個退出按鈕
+
+我們到 `views` 目錄中的 `_partials` 裡找到 `header.html` 文件
+
+把該退出路徑設為 `/logout` 然後回到路由文件中
+
+直接將 `loginUser` 的值設為空 並重定向回首頁即完成登出請求

@@ -14,13 +14,8 @@
       <h1>新用戶註冊</h1>
       <h4><a href="/">點我回首頁</a></h4>
     </div>
-    <!-- 
-      表单具有默认的提交行为，默认是同步的，同步表单提交，浏览器会锁死（转圈儿）等待服务端的响应结果。
-      表单的同步提交之后，无论服务端响应的是什么，都会直接把响应的结果覆盖掉当前页面。
 
-      后来有人想到了一种办法，来解决这个问题。
-    -->
-    <form id="register_form" method="post" action="/register">
+    <form id="register_form">
       <div class="form-group">
         <label for="email">信箱</label>
         <input type="email" class="form-control" id="email" name="email" placeholder="Email" autofocus>
@@ -52,11 +47,10 @@
         success: function (data) {
           var err_code = data.err_code
           if (err_code === 0) {
+            window.alert('註冊成功！')
             window.location.href = '/'
           } else if (err_code === 1) {
-            window.alert('郵箱已存在')
-          } else if (err_code === 2) {
-            window.alert('暱稱已存在')
+            window.alert('郵箱或暱稱已存在')
           } else if (err_code === 500) {
             window.alert('系統繁忙，請稍候重試。')
           }
