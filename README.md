@@ -734,6 +734,10 @@ $('#register_form').on('submit', function (e) {
 
 這裡就直接使用 `User.findOne({條件1,條件2},fn(err,user){...})`
 
+* 要注意一開始註冊的時候我們有對密碼進行二次加密 所以在判斷條件時也要判斷加密後的密碼才找得到
+
+* 所以這裏判斷的密碼條件要寫為 `password: md5(md5(req.body.password))` 才對
+
 判斷 當 `user` 存在即跳轉頁面登入 當 `user==='null'` 表示條件不符返回信箱或密碼錯誤
 
 然後把 `findOne()` 得到的 `user` 設為 `loginUser` 的值 這樣跳轉回首頁就能傳入用戶對象了
