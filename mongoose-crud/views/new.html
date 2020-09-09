@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <title>學生管理系統</title>
+    <link href="/node_modules/bootstrap/dist/css/bootstrap.css" rel="stylesheet">
+    <link rel="stylesheet" href="/public/css/mycss.css">
+</head>
+
+<body>
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar"
+                    aria-expanded="false" aria-controls="navbar">
+                    <span class="sr-only"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="/students">後台管理</a>
+            </div>
+            <div id="navbar" class="navbar-collapse collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li><a href="#">應用程式</a></li>
+                    <li><a href="#">設置</a></li>
+                    <li><a href="#">個人檔案</a></li>
+                    <li><a href="#">說明</a></li>
+                </ul>
+                <form class="navbar-form navbar-right">
+                    <input type="text" class="form-control" placeholder="Search...">
+                </form>
+            </div>
+        </div>
+    </nav>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-sm-3 col-md-2 sidebar">
+                <ul class="nav nav-sidebar">
+                    <li class="active"><a href="/students">學生管理系統 <span class="sr-only">(current)</span></a></li>
+                    <li><a href="#">老師管理系統</a></li>
+                    <li><a href="#">主任管理系統</a></li>
+                    <li><a href="#">教官管理系統</a></li>
+                </ul>
+                <ul class="nav nav-sidebar">
+                    <li><a href="">學生成績考核</a></li>
+                    <li><a href="">老師成績考核</a></li>
+                    <li><a href="">主任成績考核</a></li>
+                    <li><a href="">教官成績考核</a></li>
+                    <li><a href="">學校成績考核</a></li>
+                </ul>
+                <ul class="nav nav-sidebar">
+                    <li><a href="">學生專用網站</a></li>
+                    <li><a href="">教師專用網站</a></li>
+                    <li><a href="">校長專用網站</a></li>
+                </ul>
+            </div>
+            <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+                <h2 class="sub-header">添加學生</h2>
+                <form action="/students/new" method="post">
+                    <div class="form-group">
+                        <label for="">姓名</label>
+                        <input type="text" class="form-control" id="" name="name" required minlength="2" maxlength="10">
+                    </div>
+                    <div class="form-group">
+                        <label for="">性别</label>
+                        <div>
+                            <label class="radio-inline">
+                                <input type="radio" name="gender" id="" value="0" checked> 男
+                            </label>
+                            <label class="radio-inline">
+                                <input type="radio" name="gender" id="" value="1"> 女
+                            </label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="">資訊</label>
+                        <input class="form-control" type="text" id="" name="message" required min="0" max="150">
+                    </div>
+                    <button type="submit" class="btn btn-default">送出</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
