@@ -10,6 +10,7 @@ app.use('/node_modules/', express.static(path.join(__dirname, './node_modules/')
 app.engine('html',require('express-art-template'))
 
 app.use(router)
+
 app.listen(8723, function () {
     console.log('running......')
 })

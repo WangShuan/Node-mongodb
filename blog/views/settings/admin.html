@@ -1,37 +1,37 @@
 {{extend '../_layouts/home.html'}}
 
-{{block 'title'}}{{'多人博客 - 首页'}}{{/block}}
+{{block 'title'}}{{'部落格 - 首頁'}}{{/block}}
 
 {{block 'body'}}
 <section class="container">
   {{include '../_partials/settings-nav.html'}}
   <div class="col-md-5">
     <div class="subhead">
-      <h2>修改密码</h2>
+      <h2>修改密碼</h2>
     </div>
     <hr>
     <form>
       <div class="form-group">
-        <label for="exampleInputPassword1">当前密码</label>
+        <label for="exampleInputPassword1">當前密碼</label>
         <input type="password" class="form-control" id="exampleInputPassword1" placeholder="">
       </div>
       <div class="form-group">
-        <label for="exampleInputPassword1">新的密码</label>
+        <label for="exampleInputPassword1">新密碼</label>
         <input type="password" class="form-control" id="exampleInputPassword1" placeholder="">
       </div>
       <div class="form-group">
-        <label for="exampleInputPassword1">确认密码</label>
+        <label for="exampleInputPassword1">確認密碼</label>
         <input type="password" class="form-control" id="exampleInputPassword1" placeholder="">
       </div>
       <button type="submit" class="btn btn-success">保存</button>
     </form>
     <div class="subhead">
-      <h2>注销账号</h2>
+      <h2>刪除帳號</h2>
       <hr>
     </div>
     <div>
-      <p>一旦注销，不可找回，请谨慎操作</p>
-      <button class="btn btn-danger">删除</button>
+      <p>此為永久刪除，刪除後無法復原，請慎選。</p>
+      <button class="btn btn-danger">確定刪除</button>
     </div>
     <hr>
   </div>

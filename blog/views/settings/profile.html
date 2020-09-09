@@ -1,6 +1,6 @@
 {{extend '../_layouts/home.html'}}
 
-{{block 'title'}}{{'多人博客 - 首页'}}{{/block}}
+{{block 'title'}}{{'部落格 - 首頁'}}{{/block}}
 
 {{block 'body'}}
 <section class="container">
@@ -8,19 +8,19 @@
   <div class="col-md-5">
     <form>
       <div class="form-group">
-        <label for="exampleInputEmail1">账号</label>
+        <label for="exampleInputEmail1">帳號</label>
         <p class="form-control-static">email@example.com</p>
       </div>
       <div class="form-group">
-        <label for="exampleInputPassword1">昵称</label>
-        <input type="password" class="form-control" id="exampleInputPassword1" placeholder="">
+        <label for="">暱稱</label>
+        <input type="text" class="form-control" id="" placeholder="">
       </div>
       <div class="form-group">
-        <label for="exampleInputPassword1">介绍</label>
+        <label for="">個人介紹</label>
         <textarea class="form-control" rows="3"></textarea>
       </div>
       <div class="form-group">
-        <label for="exampleInputPassword1">性别</label>
+        <label for="">性别</label>
         <div>
           <label class="radio-inline">
             <input type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1"> 男
@@ -34,15 +34,15 @@
         </div>
       </div>
       <div class="form-group">
-        <label for="exampleInputPassword1">生日</label>
-        <input type="password" class="form-control" id="exampleInputPassword1" placeholder="">
+        <label for="">生日</label>
+        <input type="date" class="form-control" id="" placeholder="YYYY-MM-DD">
       </div>
       <button type="submit" class="btn btn-success">保存</button>
     </form>
   </div>
   <div class="col-md-2 profile-avatar">
     <dl>
-      <dt>头像设置</dt>
+      <dt>設置大頭貼</dt>
       <dd>
         <img class="avatar" width="150" height="150" src="../public/img/avatar-max-img.png" alt="">
         <div>

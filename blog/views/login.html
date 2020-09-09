@@ -3,7 +3,7 @@
 
 <head>
   <meta charset="UTF-8">
-  <title>Document</title>
+  <title>登入</title>
   <link rel="stylesheet" href="/node_modules/bootstrap/dist/css/bootstrap.css">
   <link rel="stylesheet" href="/public/css/login.css">
 </head>
@@ -11,30 +11,28 @@
 <body>
   <div class="main">
     <div class="header">
-      <a href="/">
-        <img src="/public/img/logo3.png" alt="">
-      </a>
-      <h1>用户登录</h1>
+      <h1>用戶登入</h1>
+      <h4><a href="/">點我回首頁</a></h4>
     </div>
     <form id="login_form">
       <div class="form-group">
-        <label for="">邮箱</label>
+        <label for="">信箱</label>
         <input type="email" class="form-control" id="" name="email" placeholder="Email" autofocus>
       </div>
       <div class="form-group">
-        <label for="">密码</label>
-        <a class="pull-right" href="">忘记密码？</a>
+        <label for="">密碼</label>
+        <a class="pull-right" href="">忘記密碼？</a>
         <input type="password" class="form-control" id="" name="password" placeholder="Password">
       </div>
       <div class="checkbox">
         <label>
-          <input type="checkbox">记住我
+          <input type="checkbox">記住我
         </label>
       </div>
-      <button type="submit" class="btn btn-success btn-block">登录</button>
+      <button type="submit" class="btn btn-success btn-block">登入</button>
     </form>
     <div class="message">
-      <p>没有账号? <a href="/register">点击创建</a>.</p>
+      <p>沒有帳號？<a href="/register">點擊創建</a>.</p>
     </div>
   </div>
   <script src="/node_modules/jquery/dist/jquery.js"></script>
@@ -55,9 +53,9 @@
             // 服务端重定向针对异步请求无效
             window.location.href = '/'
           } else if (err_code === 1) {
-            window.alert('邮箱或者密码错误')
+            window.alert('信箱或密碼錯誤')
           } else if (err_code === 500) {
-            window.alert('服务器忙，请稍后重试！')
+            window.alert('系統繁忙，請稍候重試。')
           }
         }
       })
