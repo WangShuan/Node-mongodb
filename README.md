@@ -555,4 +555,42 @@ p1
 
   ```
 
+設置頁面 使用模板引擎把重複代碼做成 `layouts.html` 頁面
+
+* 使用 `{{include 'html頁面'}}` 即可把寫好的 `html` 段落加載進 `layouts.html` 中
+
+* `{{block aaa}}  {{/block}}` 這句是預留空間 裡面可放入一段默認內容
+
+  - 當你在其他頁面中要引入 `layouts.html` 時 只需通過 `{{extend './layouts.html'}}` 即可
+
+  - `{{extend './layouts.html'}}` 就是 繼承 `layouts.html` 的意思
+
+  - 假設你沒有在引入 `layouts.html` 的頁面中使用 `{{block aaa}}取代默認內容的內容{{/block}}` 則會以默認內容渲染該頁面
+
+`layouts.html` 語法如下：
+
+```
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>{{block 'title'}}默認標題{{/block}}</title>
+  <link rel="stylesheet" href="/node_modules/bootstrap/dist/css/bootstrap.css">
+  {{block 'head'}}{{/block}}
+</head>
+
+<body>
+  {{include './header.html'}}
+
+  {{block 'body'}}
+  <h1>我是默認內容</h1>
+  {{/block}}
+  
+  {{include './footer.html'}}
+</body>
+
+</html>
+
+```
 
