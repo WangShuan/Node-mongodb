@@ -540,7 +540,7 @@ p1
 
 新增一個 `blog` 目錄 開啟終端機 創建 `package.json` 文件
 
-先使用終端機安裝 `express` `mongoose` 第三方模塊
+先使用終端機安裝 `express` `mongoose` `art-template` `express-art-template` 第三方模塊
 
 然後在 `blog` 目錄中新建 `public` 目錄 再在 `blog` 目錄中創建 `app.js` 入口文件 開啟服務器
 
@@ -555,7 +555,7 @@ p1
 
   ```
 
-設置頁面 使用模板引擎把重複代碼做成 `layouts.html` 頁面
+設置頁面 使用 `art-template` 模板引擎提供的編碼 把重複代碼做成 `layouts.html` 頁面
 
 * 使用 `{{include 'html頁面'}}` 即可把寫好的 `html` 段落加載進 `layouts.html` 中
 
@@ -569,7 +569,8 @@ p1
 
 `layouts.html` 語法如下：
 
-```
+```html
+
 <!DOCTYPE html>
 <html lang="en">
 
