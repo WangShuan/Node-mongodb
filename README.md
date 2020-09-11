@@ -805,3 +805,68 @@ $('#login_form').on('submit', function (e) {
 把該退出路徑設為 `/logout` 然後回到路由文件中
 
 直接將 `loginUser` 的值設為空 並重定向回首頁即完成登出請求
+
+代碼如下：
+
+```js
+
+router.get('/logout', function (req, res) {
+    loginUser = ''
+    res.redirect('/')
+})
+
+```
+
+
+## 10. 補充 `Express` 的中間件（在 bolg 目錄下的 express-middleware.js 文件）
+
+在 `express` 中 有 `app.use()` 方法為各種中間件配置
+
+當使用 `app.use()` 參數1沒有傳入指定請求地址 直接只傳參數2的回調函數 則默認所有請求地址都執行該方法
+
+在 `app.use()` 的回調函數中有三個參數 `req` `res` `next` 分別為 請求、響應、下一個中間件
+
+* 過去我們都只使用 `req` `res` 這兩個參數 其實還有一個參數是可選的為 `next`
+
+* 此 `next` 是一個方法 用來執行下一個中間件
+
+當你的 `js` 文件中有很多個 `app.use()` 方法 默認執行完第一個方法且該方法中沒有調用 `next()` 的話響應就結束了
+
+假設你在 `app.use()` 的回調中調用了 `next()` 方法 則會往下找尋符合條件的中間件
+
+比如你第一個 `app.use()` 沒有傳入參數1的特定請求地址 默認會無條件執行 當你在該回調中傳入 `next()`
+
+第二個 `app.use()` 同樣只傳入回調函數而沒有傳入指定請求地址 則通過上一個函數中的 `next()` 會執行第二個 `app.use()` 方法
+
+假設第二個 `app.use()` 方法有限定請求地址 則往下找第三個 `app.use()` 方法 直到所有 `app.use()` 都不符合則響應 `Cannot GET /xxx`
+
+測試代碼如下：
+
+```js
+
+var express = require('express');
+var app = express()
+
+app.use(function(req,res,next){
+    console.log(1)
+    next()
+})
+
+app.use('/a',function (req, res, next) {
+    console.log(2)
+    next()
+})
+
+app.use(function (req, res, next) {
+    console.log(3)
+    next()
+})
+
+app.listen(3000,function(){
+    console.log('test running.')
+})
+
+// 輸出結果為 1 2 3 
+// 最後頁面傳送 Cannot GET /xxx
+
+```
