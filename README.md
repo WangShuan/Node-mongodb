@@ -817,6 +817,46 @@ router.get('/logout', function (req, res) {
 
 ```
 
+### 9-6. 處理錯誤請求
+
+在 `app.js` 中的 `app.listen()` 前配置中間件處理所有錯誤請求 `app.use()`
+
+使用 `app.use(fn(err,req,res,next){...})` 即可在路由中的回調函數裡添加 `next(err)` 方法
+
+當 `next()` 方法中傳入參數 即用來處理錯誤對象 參數統一傳入 `err` 對象
+
+回到 `app.use()` 中 當 `app.use()` 的回調傳入四個參數 則第一個一定是錯誤對象
+
+* 該回調函數如果只傳 2~3 個默認都是以 `req res next` 為順序排列
+
+* 所以這裏要使用錯誤對象時 一定要傳入四個參數才有用
+
+代碼如下：
+
+```js
+
+// app.js
+
+app.use(function(err,req,res,next){
+    return res.status(500).json({
+        err_code: 500,
+        message:err.message
+    })
+})
+
+// router.js
+
+router.get('/test',function(req,res,next){
+    User.findOne({id:1},function(err,user){
+        if (err) {
+            return next(err)
+        }
+        res.render('index.html', { user: user }
+    })
+})
+
+```
+
 
 ## 10. 補充 `Express` 的中間件（在 bolg/express-middleware.js 文件）
 

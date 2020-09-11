@@ -20,12 +20,10 @@ router.get('/login', function (req, res) {
     res.render('login.html')
 })
 
-router.post('/login', function (req, res) {
+router.post('/login', function (req, res,next) {
     User.findOne({ email: req.body.email , password: md5(md5(req.body.password)) }, function (err, user) {
         if (err) {
-            return res.status(500).json({
-                err_code: 500
-            })
+            return next(err)
         }
         if (ret === 'null') {
             return res.status(200).json({
@@ -44,12 +42,10 @@ router.get('/register', function (req, res) {
     res.render('register.html')
 })
 
-router.post('/register', function (req, res) {
+router.post('/register', function (req, res,next) {
     User.findOne({ $or: [{ email: req.body.email }, { nickname: req.body.nickname }] }, function (err, ret) {
         if (err) {
-            return res.status(500).json({
-                err_code: 500
-            })
+            return next(err)
         }
         if (ret) {
             return res.status(200).json({
@@ -61,9 +57,7 @@ router.post('/register', function (req, res) {
 
         new User(req.body).save(function (err, user) {
             if (err) {
-                return res.status(500).json({
-                    err_code: 500
-                })
+                return next(err)
             }
             loginUser = user
             res.status(200).json({
