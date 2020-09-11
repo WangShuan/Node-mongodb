@@ -50,7 +50,7 @@
 * 此 `id` 是自動生成且獨一無二的
 
 
-## 4. 通過 `node.js` 連接並操作 `mongoDB` 數據庫（ demo1.js ）
+## 4. 通過 `node.js` 連接並操作 `mongoDB` 數據庫（在 mongoose/demo1.js ）
 
 `mongoDB` 的官方有提供一個 `mongodb` 模塊 但是操作上比較麻煩
 
@@ -105,7 +105,7 @@ kitty.save(function(err){
 ```
 
 
-## 5. 自己手寫一個 `node.js` 連接數據庫並感知增刪改查（ demo2.js ）
+## 5. 自己手寫一個 `node.js` 連接數據庫並感知增刪改查（在 mongoose/demo2.js ）
 
 引入 `mongoose` 模塊
 
@@ -303,7 +303,7 @@ User.findByIdAndUpdate('5f56364b347a37069f9e44e3',{email:'johnnn@test.com'},func
 ```
 
 
-## 6. 使用 `mongoose` 重做 `express-crud` 案例
+## 6. 使用 `mongoose` 重做 `express-crud` 案例（在 mongoose-crud 目錄）
 
 將原本的 `express-crud` 專案複製到當前目錄中 改名為 `mongoose-crud`
 
@@ -421,7 +421,7 @@ User.findByIdAndUpdate('5f56364b347a37069f9e44e3',{email:'johnnn@test.com'},func
       ```
 
 
-## 7. 回調地獄與 `Promise`
+## 7. 回調地獄與 `Promise` （在 mongoose-demo/demo3.js 中）
 
 當你為了獲取並操作異步方法通常要使用回調函數 
 
@@ -536,7 +536,7 @@ p1
     - 因為模塊路徑是跟隨當前文件的目錄尋找的，而不是像文件操作一樣是跟隨執行命令所處目錄尋找
 
 
-## 9. 做一個可註冊登入登出的部落格案例
+## 9. 做一個可註冊登入登出的部落格案例（在 blog 目錄）
 
 新增一個 `blog` 目錄 開啟終端機 創建 `package.json` 文件
 
@@ -818,7 +818,7 @@ router.get('/logout', function (req, res) {
 ```
 
 
-## 10. 補充 `Express` 的中間件（在 bolg 目錄下的 express-middleware.js 文件）
+## 10. 補充 `Express` 的中間件（在 bolg/express-middleware.js 文件）
 
 在 `express` 中 有 `app.use()` 方法為各種中間件配置
 
